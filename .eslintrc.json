@@ -3,12 +3,11 @@
         "browser": true,
         "es2021": true
     },
-    "plugins": [
-        "react"
-    ],
+    "plugins": ["react"],
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "plugin:prettier/recommended"
     ],
     "parser": "babel-eslint",
     "parserOptions": {
@@ -19,7 +18,9 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
-    "rules": {},
+    "rules": {
+        "react/prop-types": "off"
+    },
     "ignorePatterns": ["electron.js"],
     "settings": {
         "react": {

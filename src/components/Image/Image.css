@@ -1,15 +1,18 @@
+/* Add padding around the image card */
 .image-container {
     padding: 0.5rem 0;
 }
 
+/* Set the list of tags to display as a line, without any list styles */
 .tag-list {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: flex-start;
     list-style: none;
     padding: 0;
 }
 
+/* Add styling to each item in the tag list */
 .tag-list li {
     padding: 0.1rem;
 }

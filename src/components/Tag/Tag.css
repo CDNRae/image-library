@@ -1,3 +1,6 @@
+/* Override Bootstrap's pill badge */
 .custom-tag-pill {
-    background-color:#4B88A2;
+    background-color: #4b88a2 !important;
+    font-weight: 400 !important;
+    padding-bottom: 5px !important;
 }
