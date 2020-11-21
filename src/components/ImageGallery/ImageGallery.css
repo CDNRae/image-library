@@ -56,9 +56,8 @@
     left: 0;
     height: 100vh;
     z-index: 999;
-    padding: 0.5rem;
+    padding: 40px 10px 10px 20px;
     transition: all 0.5s;
-    padding-top: 35px;
 }
 
 #sidebar.active {

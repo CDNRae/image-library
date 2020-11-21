@@ -9,15 +9,15 @@ class UploadImages extends Component {
         show: false,
     };
 
-    handleClose() {
+    handleClose = () => {
         this.setState({ show: false });
-    }
+    };
 
-    handleShow() {
+    handleShow = () => {
         this.setState({ show: true });
-    }
+    };
 
-    handleDrop(files) {
+    handleDrop = (files) => {
         let fileList = this.state.files;
 
         for (var i = 0; i < files.length; i++) {
@@ -25,7 +25,7 @@ class UploadImages extends Component {
             fileList.push(files[i].name);
         }
         this.setState({ files: fileList });
-    }
+    };
 
     render() {
         return (

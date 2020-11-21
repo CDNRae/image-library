@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
+import TitleBar from "./components/TitleBar/TitleBar";
 
 class App extends Component {
     state = {
@@ -47,12 +48,13 @@ class App extends Component {
                 tags: ["one", "two", "three"],
             },
         ],
-        showImageName: false,
+        showImageName: true,
     };
 
     render() {
         return (
             <div>
+                <TitleBar />
                 <ImageGallery
                     images={this.state.images}
                     showImageName={this.state.showImageName}

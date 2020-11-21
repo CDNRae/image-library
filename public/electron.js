@@ -1,16 +1,19 @@
 const path = require("path");
 const { app, BrowserWindow, protocol } = require("electron");
 const isDev = require("electron-is-dev");
+const fs = require("fs");
 
 function createWindow() {
     // Create the browser window.
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
         webPreferences: {
+            width: 1024,
+            height: 728,
             nodeIntegration: true,
             webSecurity: isDev !== true,
             enableRemoteModule: true,
+            frame: false,
+            titleBarStyle: 'hidden'
         },
     });
 
@@ -21,6 +24,9 @@ function createWindow() {
             ? "http://localhost:3000"
             : `file://${path.join(__dirname, "../build/index.html")}`
     );
+
+    // Hide the menu bar
+    win.setMenuBarVisibility(false)
 
     // Open the DevTools.
     if (isDev) {

@@ -7,6 +7,7 @@ body {
         "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 120%;
 }
 
 code {
@@ -15,6 +16,14 @@ code {
 }
 
 .btn-primary-custom {
+    background-color: #4b88a2;
+    border-color: #4b88a2;
+    outline-color: #4b88a2;
+}
+
+.btn-primary-custom:hover,
+.btn-primary-custom:active,
+.btn-primary-custom:focus {
     background-color: #4b88a2;
     border-color: #4b88a2;
     outline-color: #4b88a2;
