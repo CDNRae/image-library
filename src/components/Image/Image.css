@@ -1,0 +1,15 @@
+.image-container {
+    padding: 0.5rem 0;
+}
+
+.tag-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    list-style: none;
+    padding: 0;
+}
+
+.tag-list li {
+    padding: 0.1rem;
+}

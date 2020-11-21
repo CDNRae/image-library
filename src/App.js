@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ImageGallery from './components/ImageGallery';
+import ImageGallery from './components/ImageGallery/ImageGallery';
 
 class App extends Component {
     state = {
@@ -11,7 +11,7 @@ class App extends Component {
             { "id": 5, "path": "D:/Creative/Dragon Age/References/George/DAOrigins 2020-11-05 21-26-01-64.bmp", "name": "DAOrigins DAOrigins 2020-11-05 21-26-01-64", "tags": ["one", "two", "three"] },
             { "id": 6, "path": "D:/Creative/Dragon Age/References/George/DAOrigins 2020-11-05 21-34-25-80.bmp", "name": "DAOrigins 2020-11-05 21-34-25-80", "tags": ["one", "two", "three"] }
         ],
-        showImageName: true
+        showImageName: false
     }
 
     render() {

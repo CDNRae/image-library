@@ -11,11 +11,11 @@ class UploadImages extends Component {
 
     handleClose() {
         this.setState({show: false})
-    };
+    }
 
     handleShow() {
         this.setState({show: true})
-    };
+    }
 
     handleDrop(files) {
         let fileList = this.state.files;
@@ -30,7 +30,7 @@ class UploadImages extends Component {
     render() {
         return (
             <>
-                <Button variant="primary" onClick={this.handleShow}>
+                <Button variant="primary" onClick={this.handleShow} className="btn-primary-custom">
                     Upload Images
                 </Button>
 
