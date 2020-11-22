@@ -6,14 +6,13 @@ const fs = require("fs");
 function createWindow() {
     // Create the browser window.
     const win = new BrowserWindow({
+        frame: false,
         webPreferences: {
             width: 1024,
             height: 728,
             nodeIntegration: true,
             webSecurity: isDev !== true,
             enableRemoteModule: true,
-            frame: false,
-            titleBarStyle: 'hidden'
         },
     });
 

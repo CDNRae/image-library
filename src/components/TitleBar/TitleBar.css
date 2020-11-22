@@ -1,0 +1,43 @@
+/* Styling for the custom title bar, containing app name and traffic light buttons */
+#title-bar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: #252422;
+    color: #fffcf2;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    padding: 3px 0px 6px 12px;
+    z-index: 999;
+    -webkit-app-region: drag;
+    justify-content: space-between;
+    font-size: 80%;
+}
+
+/* App Name */
+#title-bar-name {
+    justify-content: flex-start;
+}
+
+/* A container holding all the traffic light buttons */
+#title-bar-button-container {
+    display: flex;
+    padding-right: 7px;
+}
+
+/* Styling for the buttons */
+.title-bar-button {
+    padding: 0px 5px;
+    -webkit-app-region: no-drag;
+    color: #fffcf2;
+    transition: all 0.5s;
+}
+
+/* Styling for the buttons when they're hovered over */
+.title-bar-button:hover {
+    color: #9f9a93;
+    cursor: pointer;
+    transition: all 0.5s;
+}

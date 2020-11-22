@@ -5,6 +5,7 @@ import SideBar from "../SideBar/SideBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 import { GiHamburgerMenu } from "react-icons/gi";
 import "./ImageGallery.css";
 
@@ -45,6 +46,13 @@ class ImageGallery extends Component {
                             </Col>
                             <Col>
                                 <div className="float-right">
+                                    <Button
+                                        variant="secondary"
+                                        className="btn-secondary-custom"
+                                    >
+                                        Select Images
+                                    </Button>
+                                    {"   "}
                                     <UploadImages />
                                 </div>
                             </Col>
