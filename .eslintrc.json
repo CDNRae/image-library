@@ -21,7 +21,7 @@
     "rules": {
         "react/prop-types": "off"
     },
-    "ignorePatterns": ["electron.js", "dist/*", "build/*"],
+    "ignorePatterns": ["electron.js", "src/database/*", "dist/*", "build/*"],
     "settings": {
         "react": {
             "createClass": "createReactClass",

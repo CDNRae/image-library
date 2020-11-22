@@ -2,6 +2,9 @@ const path = require("path");
 const { app, BrowserWindow, protocol } = require("electron");
 const isDev = require("electron-is-dev");
 const fs = require("fs");
+const { electron } = require("process");
+const { ipcMain } = require('electron');
+const DatabaseManager = require("../src/database/DatabaseManager");
 
 function createWindow() {
     // Create the browser window.
@@ -27,10 +30,21 @@ function createWindow() {
     // Hide the menu bar
     win.setMenuBarVisibility(false)
 
-    // Open the DevTools.
+    // Open the DevTools if in the dev environment
     if (isDev) {
         win.webContents.openDevTools({ mode: "detach" });
     }
+
+    // Connect to the database
+    let path = app.getPath("userData");
+    path = path + "/data";
+    let databaseManager = new DatabaseManager();
+
+    if (!fs.existsSync(path)) {
+        fs.mkdir(path);
+    }
+
+    databaseManager.initializeConnection(app.getPath("userData"));
 }
 
 // This method will be called when Electron has finished
@@ -64,3 +78,15 @@ app.on("activate", () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+ipcMain.on("minimize", (event, arg) => {
+    event.sender.getOwnerBrowserWindow().minimize()
+})
+
+ipcMain.on("maximize", (event, arg) => {
+    let browserWindow = event.sender.getOwnerBrowserWindow();
+    browserWindow.setFullScreen(!browserWindow.isFullScreen());
+})
+
+ipcMain.on("close", (event, arg) => {
+    event.sender.getOwnerBrowserWindow().close();
+})
