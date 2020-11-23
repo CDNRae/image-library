@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 
 class UploadImages extends Component {
     state = {
-        files: [],
+        images: [],
         show: false,
     };
 
@@ -17,14 +17,16 @@ class UploadImages extends Component {
         this.setState({ show: true });
     };
 
-    handleDrop = (files) => {
-        let fileList = this.state.files;
+    handleDrop = (images) => {
+        let imageList = this.state.images;
 
-        for (var i = 0; i < files.length; i++) {
-            if (!files[i].name) return;
-            fileList.push(files[i].name);
+        for (var i = 0; i < images.length; i++) {
+            if (images[i].name) {
+                imageList.push({ name: images[i].name, path: images[i].path });
+            }
         }
-        this.setState({ files: fileList });
+
+        this.setState({ images: imageList });
     };
 
     render() {
@@ -51,14 +53,14 @@ class UploadImages extends Component {
                     <Modal.Body>
                         <DragAndDrop handleDrop={this.handleDrop}>
                             <div style={{ height: 300, width: 250 }}>
-                                {this.state.files.map((file, index) => (
+                                {this.state.images.map((file, index) => (
                                     <div key={index}>{file}</div>
                                 ))}
                             </div>
                         </DragAndDrop>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="primary" onClick={this.handleClose}>
+                        <Button variant="primary" onClick={this.handleUpload}>
                             Upload Images
                         </Button>
                         <Button variant="secondary" onClick={this.handleClose}>

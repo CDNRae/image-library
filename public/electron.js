@@ -4,7 +4,9 @@ const isDev = require("electron-is-dev");
 const fs = require("fs");
 const { electron } = require("process");
 const { ipcMain } = require('electron');
-const DatabaseManager = require("../src/database/DatabaseManager");
+const { DatabaseManager } = require("../src/database/DatabaseManager");
+
+let databaseManager = null;
 
 function createWindow() {
     // Create the browser window.
@@ -36,15 +38,21 @@ function createWindow() {
     }
 
     // Connect to the database
-    let path = app.getPath("userData");
-    path = path + "/data";
-    let databaseManager = new DatabaseManager();
+    let pathToAppData = app.getPath("userData");
+    pathToAppData = path.join(pathToAppData, "data", "data.sql");
 
-    if (!fs.existsSync(path)) {
-        fs.mkdir(path);
+
+    if (!fs.existsSync(pathToAppData)) {
+        fs.mkdir(pathToAppData, (err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
     }
 
-    databaseManager.initializeConnection(app.getPath("userData"));
+    databaseManager = new DatabaseManager(pathToAppData);
+    console.log(pathToAppData)
+    console.log(databaseManager);
 }
 
 // This method will be called when Electron has finished
@@ -64,6 +72,7 @@ app.whenReady().then(() => {
 // explicitly with Cmd + Q.
 app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
+        databaseManager.closeDatabase();
         app.quit();
     }
 });
@@ -76,8 +85,7 @@ app.on("activate", () => {
     }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+// Listeners for the traffic lights
 ipcMain.on("minimize", (event, arg) => {
     event.sender.getOwnerBrowserWindow().minimize()
 })
@@ -88,5 +96,16 @@ ipcMain.on("maximize", (event, arg) => {
 })
 
 ipcMain.on("close", (event, arg) => {
+    databaseManager.closeDatabase();
     event.sender.getOwnerBrowserWindow().close();
+})
+
+//DB Stuff
+ipcMain.on("get-images", (event, arg) => {
+    let rows = databaseManager.getImages();
+    event.reply(rows);
+});
+
+ipcMain.on("insert-images", (event, arg)=> {
+    databaseManager.insertImages(images);
 })
