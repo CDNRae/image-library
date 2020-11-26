@@ -42,6 +42,27 @@ class ImageGallery extends Component {
         return <Image image={image} showImageName={showImageName}></Image>;
     }
 
+    galleryContent() {
+        if (this.state.images == null) {
+            return (
+                <div className="no-images-in-gallery">
+                    You have no images in your gallery.
+                </div>
+            );
+        }
+        return this.props.images.map((image) => {
+            return (
+                <Col
+                    key={image.id}
+                    lg={4}
+                    className="d-flex align-items-stretch"
+                >
+                    {this.renderImage(image, this.props.showImageName)}
+                </Col>
+            );
+        });
+    }
+
     render() {
         return (
             <div className="content-wrapper">
@@ -76,23 +97,7 @@ class ImageGallery extends Component {
                                 </div>
                             </Col>
                         </Row>
-                        <Row>
-                            {this.state.images &&
-                                this.props.images.map((image) => {
-                                    return (
-                                        <Col
-                                            key={image.id}
-                                            lg={4}
-                                            className="d-flex align-items-stretch"
-                                        >
-                                            {this.renderImage(
-                                                image,
-                                                this.props.showImageName
-                                            )}
-                                        </Col>
-                                    );
-                                })}
-                        </Row>
+                        <Row>{this.galleryContent}</Row>
                     </Container>
                 </div>
             </div>
