@@ -86,42 +86,41 @@ class DatabaseManager {
     * @return {Boolean} operationSuccessful: "True" if insert was successful; false if not
     */
     insertImages(images) {
-        let operationSuccessful = true;
-        let imagesList;
+        return new Promise((resolve, reject) => {
+            let imagesList = [];
 
-        //Get the number of rows to insert and create a string of '(?)' based on that number for insertion
-        let placeholders = images.map((image) => '(?)').join(',');
+            //Get the number of rows to insert and create a string of '(?)' based on that number for insertion
+            let placeholders = images.map((image) => '(?, ?)').join(',');
 
-        //Write up insertion query
-        let query = "INSERT INTO images(image_name, image_path) VALUES " + placeholders;
+            //Write up insertion query
+            let query = "INSERT INTO images(image_name, image_path) VALUES " + placeholders;
 
-        //Format the Image objects so they can be inserted
-        images.forEach((image) => {
-            let temp = [image.image_name, image.image_path]
-            imagesList.push(temp)
+            //Format the Image objects so they can be inserted
+            images.forEach((image) => {
+                imagesList.push(image.name, image.path)
+            });
+
+            //Run query and handle errors
+
+            this._database.run(query, imagesList, function (err) {
+                if (err) {
+                    reject({status: "fail", message: "Import failed.  Error: " + err});
+                }
+            });
+
+            resolve({status: "success", message: "Images imported successfully."});
         });
-
-        //Run query and handle errors
-        this._database.run(query, imagesList, function (err) {
-            if (err) {
-                operationSuccessful = false;
-                console.error("ERROR: Could not insert into Images table.  Details:\n" + err.message);
-            }
-        });
-
-        return operationSuccessful;
     }
 
-    getImages() {
-        let rows = this._database.run("SELECT * FROM images", [], (err, rows) => {
-            if (err) {
-                throw err;
-            }
-
-            return rows;
-        });
-
-        return rows;
+    async getImages() {
+        return new Promise((resolve, reject) => {
+            this._database.each("SELECT * FROM images", [], (err, rows) => {
+                if (err) {
+                    reject(err)
+                }
+                resolve(rows);
+            });
+        })
     }
 }
 

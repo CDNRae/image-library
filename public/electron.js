@@ -88,7 +88,13 @@ ipcMain.on("minimize", (event, arg) => {
 
 ipcMain.on("maximize", (event, arg) => {
     let browserWindow = event.sender.getOwnerBrowserWindow();
-    browserWindow.setFullScreen(!browserWindow.isFullScreen());
+
+    if (browserWindow.isMaximized()) {
+        browserWindow.unmaximize();
+    }
+    else {
+        browserWindow.maximize();
+    }
 })
 
 ipcMain.on("close", (event, arg) => {
@@ -98,11 +104,13 @@ ipcMain.on("close", (event, arg) => {
 
 //DB Stuff
 ipcMain.on("get-images", (event, arg) => {
-    console.log(databaseManager)
-    let rows = databaseManager.getImages();
-    event.reply("get-images", JSON.stringify(rows));
+    databaseManager.getImages().then((result)=> {
+        event.reply("get-images-reply", JSON.stringify(result));
+    });
 });
 
 ipcMain.on("insert-images", (event, arg) => {
-    databaseManager.insertImages(images);
+    databaseManager.insertImages(arg).then((result) => {
+        event.reply("insert-images-reply", JSON.stringify(result));
+    });
 })

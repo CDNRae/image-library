@@ -30,12 +30,30 @@ class UploadImages extends Component {
         }
 
         this.setState({ images: imageList });
+        console.log(this.state.images);
     };
 
-    handleUpload() {
-        ipcRenderer.sendSync("insert-images", this.state.images);
-        this.props.getImages();
-    }
+    handleUpload = () => {
+        console.log(this.state.images);
+
+        if (this.state.images.length > 0) {
+            ipcRenderer.send(
+                "insert-images",
+                JSON.stringify(this.state.images)
+            );
+
+            ipcRenderer.on("insert-images-reply", (event, arg) => {
+                let response = JSON.parse(arg);
+
+                if (response.status == "success") {
+                    this.props.getImages;
+                } else {
+                    console.error(response.message);
+                }
+                this.handleClose();
+            });
+        }
+    };
 
     render() {
         return (

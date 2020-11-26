@@ -21,17 +21,26 @@ class ImageGallery extends Component {
             images: [],
             showImageName: true,
             showSidebar: false,
+            imagesUpdated: false,
         };
 
         this.getImages = this.getImages();
+        this.getImages;
+    }
+
+    componentDidMount() {
+        this.getImages;
     }
 
     getImages() {
-        let imageList = ipcRenderer.send("get-images");
+        console.log("started");
+        ipcRenderer.send("get-images");
 
-        if (imageList) {
-            this.setState({ images: JSON.parse(imageList) });
-        }
+        ipcRenderer.on("get-images-reply", (event, arg) => {
+            if (arg) {
+                this.setState({ images: [arg] });
+            }
+        });
     }
 
     toggleSideBar = () => {
@@ -43,21 +52,22 @@ class ImageGallery extends Component {
     }
 
     galleryContent() {
-        if (this.state.images == null) {
+        console.log(this.state.images);
+        if (this.state.images.length == 0) {
             return (
                 <div className="no-images-in-gallery">
                     You have no images in your gallery.
                 </div>
             );
         }
-        return this.props.images.map((image) => {
+        return this.state.images.map((image) => {
             return (
                 <Col
                     key={image.id}
                     lg={4}
                     className="d-flex align-items-stretch"
                 >
-                    {this.renderImage(image, this.props.showImageName)}
+                    {this.renderImage(image, this.state.showImageName)}
                 </Col>
             );
         });
@@ -97,7 +107,7 @@ class ImageGallery extends Component {
                                 </div>
                             </Col>
                         </Row>
-                        <Row>{this.galleryContent}</Row>
+                        <Row>{this.galleryContent()}</Row>
                     </Container>
                 </div>
             </div>

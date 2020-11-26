@@ -1,5 +1,4 @@
 import React from "react";
-import TagList from "../Tag/Tag";
 import Card from "react-bootstrap/Card";
 import "./Image.css";
 
@@ -10,26 +9,17 @@ import "./Image.css";
  * @return {JSX} A rendered view of the image.
  */
 const Image = (props) => {
+    let image = JSON.parse(props.image);
+
     return (
         <div className="image-container">
             <Card className="h-100">
-                <Card.Img variant="top" src={props.image.path} />
+                <Card.Img variant="top" src={image.image_path} />
                 {props.showImageName === true && (
                     <Card.Body>
-                        <div className="image-name">{props.image.name}</div>
+                        <div className="image-name">{image.image_name}</div>
                     </Card.Body>
                 )}
-                <Card.Footer>
-                    <ul className="tag-list">
-                        {props.image.tags.map((tag) => {
-                            return (
-                                <li key={tag.name}>
-                                    <TagList tag={tag}></TagList>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </Card.Footer>
             </Card>
         </div>
     );
