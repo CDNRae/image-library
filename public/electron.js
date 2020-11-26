@@ -36,23 +36,6 @@ function createWindow() {
     if (isDev) {
         win.webContents.openDevTools({ mode: "detach" });
     }
-
-    // Connect to the database
-    let pathToAppData = app.getPath("userData");
-    pathToAppData = path.join(pathToAppData, "data", "data.sql");
-
-
-    if (!fs.existsSync(pathToAppData)) {
-        fs.mkdir(pathToAppData, (err) => {
-            if (err) {
-                console.error(err);
-            }
-        });
-    }
-
-    databaseManager = new DatabaseManager(pathToAppData);
-    console.log(pathToAppData)
-    console.log(databaseManager);
 }
 
 // This method will be called when Electron has finished
@@ -64,6 +47,19 @@ app.whenReady().then(() => {
         callback(pathname);
     });
 
+    // Connect to the database
+    let pathToAppData = app.getPath("userData");
+    pathToAppData = path.join(pathToAppData, "data", "data.sql");
+
+    if (!fs.existsSync(pathToAppData)) {
+        fs.mkdir(pathToAppData, (err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
+    };
+
+    databaseManager = new DatabaseManager(pathToAppData);
     createWindow();
 });
 
@@ -102,10 +98,11 @@ ipcMain.on("close", (event, arg) => {
 
 //DB Stuff
 ipcMain.on("get-images", (event, arg) => {
+    console.log(databaseManager)
     let rows = databaseManager.getImages();
-    event.reply(rows);
+    event.reply("get-images", JSON.stringify(rows));
 });
 
-ipcMain.on("insert-images", (event, arg)=> {
+ipcMain.on("insert-images", (event, arg) => {
     databaseManager.insertImages(images);
 })

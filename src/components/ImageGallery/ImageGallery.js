@@ -9,11 +9,30 @@ import Button from "react-bootstrap/Button";
 import { GiHamburgerMenu } from "react-icons/gi";
 import "./ImageGallery.css";
 
+const electron = window.require("electron");
+const ipcRenderer = electron.ipcRenderer;
+
 /** @class ImageGallery represents an image gallery, which displays a series of images in a grid */
 class ImageGallery extends Component {
-    state = {
-        showSidebar: false,
-    };
+    constructor() {
+        super();
+
+        this.state = {
+            images: [],
+            showImageName: true,
+            showSidebar: false,
+        };
+
+        this.getImages = this.getImages();
+    }
+
+    getImages() {
+        let imageList = ipcRenderer.send("get-images");
+
+        if (imageList) {
+            this.setState({ images: JSON.parse(imageList) });
+        }
+    }
 
     toggleSideBar = () => {
         this.setState({ showSidebar: !this.state.showSidebar });
@@ -53,25 +72,26 @@ class ImageGallery extends Component {
                                         Select Images
                                     </Button>
                                     {"   "}
-                                    <UploadImages />
+                                    <UploadImages getImages={this.getImages} />
                                 </div>
                             </Col>
                         </Row>
                         <Row>
-                            {this.props.images.map((image) => {
-                                return (
-                                    <Col
-                                        key={image.id}
-                                        lg={4}
-                                        className="d-flex align-items-stretch"
-                                    >
-                                        {this.renderImage(
-                                            image,
-                                            this.props.showImageName
-                                        )}
-                                    </Col>
-                                );
-                            })}
+                            {this.state.images &&
+                                this.props.images.map((image) => {
+                                    return (
+                                        <Col
+                                            key={image.id}
+                                            lg={4}
+                                            className="d-flex align-items-stretch"
+                                        >
+                                            {this.renderImage(
+                                                image,
+                                                this.props.showImageName
+                                            )}
+                                        </Col>
+                                    );
+                                })}
                         </Row>
                     </Container>
                 </div>

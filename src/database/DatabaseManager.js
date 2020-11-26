@@ -1,43 +1,49 @@
 const sqlite3 = require('sqlite3');
-const winston = require('winston');
 
 class DatabaseManager {
     constructor(dataLocation) {
-        this._database = null;
-        this._is_connected = null;
+        this._is_connected = false;
 
-        this.connectToDatabase(dataLocation);
+        this.connectToDatabase(dataLocation).then(() => {
+            if (this._is_connected) {
+                this._database.run("PRAGMA foreign_keys = ON")
 
-        if (this._is_connected) {
-            let createQueries = [
-                "CREATE TABLE tags IF NOT EXISTS (tag_id INTEGER PRIMARY KEY,tag_name TEXT NOT NULL);",
-                "CREATE TABLE images IF NOT EXISTS (image_id INTEGER PRIMARY KEY,image_name TEXT,image_path TEXT NOT NULL);",
-                "CREATE TABLE image_tags IF NOT EXISTS (image_tag_id INTEGER PRIMARY KEY,FOREGIN KEY (tag_id) REFERENCES tags(tag_id) ON DELETE SET NULL);"
-            ]
+                let createQueries = [
+                    "CREATE TABLE IF NOT EXISTS tags (tag_id INTEGER PRIMARY KEY,tag_name TEXT NOT NULL)",
+                    "CREATE TABLE IF NOT EXISTS images (image_id INTEGER PRIMARY KEY,image_name TEXT,image_path TEXT NOT NULL)",
+                    "CREATE TABLE IF NOT EXISTS image_tags (image_tag_id INTEGER PRIMARY KEY,tag_id INTEGER NOT NULL,FOREIGN KEY (tag_id) REFERENCES tags(tag_id) ON DELETE CASCADE)"
+                ]
 
-            //Run the create queries
-            this._database.serialize(() => {
-                createQueries.forEach((query) => {
-                    this._database.run(query)
-                })
-            });
+                //Run the create queries
+                this._database.serialize(() => {
+                    createQueries.forEach((query) => {
+                        this._database.run(query)
+                    })
+                });
 
-            this.haveTablesBeenCreated = true;
-        }
-
+                this._haveTablesBeenCreated = true;
+                console.log("Tables have been created");
+            }
+            else {
+                console.error("Was unable to connect to database");
+            }
+        });
     }
 
     connectToDatabase(dataLocation) {
-        this._database = new sqlite3.Database(dataLocation, (err) => {
-            if (err) {
-                this._is_connected = false;
-                console.error("Unable to connect to database", err);
-            }
-            else {
-                this._is_connected = true;
-                console.info("Connected to database successfully");
-            }
-        });
+        return new Promise((resolve, reject) => {
+            this._database = new sqlite3.Database(dataLocation, (err) => {
+                if (err) {
+                    this._is_connected = false;
+                    reject("Unable to connect to database", err);
+                }
+                else {
+                    this._is_connected = true;
+                    resolve("Connected to database successfully");
+                }
+            });
+        })
+
     }
 
     closeDatabase() {

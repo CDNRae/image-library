@@ -3,6 +3,9 @@ import DragAndDrop from "./DragAndDrop";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
+const electron = window.require("electron");
+const ipcRenderer = electron.ipcRenderer;
+
 class UploadImages extends Component {
     state = {
         images: [],
@@ -21,13 +24,18 @@ class UploadImages extends Component {
         let imageList = this.state.images;
 
         for (var i = 0; i < images.length; i++) {
-            if (images[i].name) {
+            if (images[i]) {
                 imageList.push({ name: images[i].name, path: images[i].path });
             }
         }
 
         this.setState({ images: imageList });
     };
+
+    handleUpload() {
+        ipcRenderer.sendSync("insert-images", this.state.images);
+        this.props.getImages();
+    }
 
     render() {
         return (
@@ -53,8 +61,8 @@ class UploadImages extends Component {
                     <Modal.Body>
                         <DragAndDrop handleDrop={this.handleDrop}>
                             <div style={{ height: 300, width: 250 }}>
-                                {this.state.images.map((file, index) => (
-                                    <div key={index}>{file}</div>
+                                {this.state.images.map((image, index) => (
+                                    <div key={index}>{image.name}</div>
                                 ))}
                             </div>
                         </DragAndDrop>
