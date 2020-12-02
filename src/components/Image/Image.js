@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
+import Modal from "react-bootstrap/Modal";
+import { BsArrowsAngleExpand } from "react-icons/bs";
 import "./Image.css";
 
 /**
@@ -9,18 +11,39 @@ import "./Image.css";
  * @return {JSX} A rendered view of the image.
  */
 const Image = (props) => {
-    let image = JSON.parse(props.image);
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     return (
-        <div className="image-container">
-            <Card className="h-100">
-                <Card.Img variant="top" src={image.image_path} />
-                {props.showImageName === true && (
-                    <Card.Body>
-                        <div className="image-name">{image.image_name}</div>
-                    </Card.Body>
-                )}
+        <div>
+            <Card>
+                <div className="card-image-container">
+                    <Card.Img variant="top" src={props.image.image_path} />
+                    <div className="card-image-information">
+                        <div
+                            className="image-expand-button"
+                            onClick={handleShow}
+                        >
+                            <BsArrowsAngleExpand />
+                        </div>
+                    </div>
+                </div>
             </Card>
+
+            <Modal
+                show={show}
+                onHide={handleClose}
+                dialogClassName="fullsize-image-modal"
+            >
+                <Modal.Body>
+                    <img
+                        className="fullsize-image"
+                        src={props.image.image_path}
+                    />
+                </Modal.Body>
+            </Modal>
         </div>
     );
 };

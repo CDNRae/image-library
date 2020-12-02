@@ -1,9 +1,66 @@
 /* Add padding around the image card */
+
 .image-container {
     padding: 0.5rem 0;
 }
 
+/* On hover, show information about the image by displaying the card-image-information element */
+
+.card-image-container:hover .card-image-information {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Element that holds information about the image, like its name and tags.  Not visible until an image is hovered over */
+
+.card-image-information {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    position: absolute;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease-in-out;
+}
+
+.image-expand-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #4b88a2;
+    border-radius: 20%;
+    padding: 0px 5px 5px 5px;
+    transition: 0.5s all;
+}
+
+.image-expand-button:hover {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #31647a;
+    border-radius: 20%;
+    padding: 0px 5px 5px 5px;
+    transition: 0.5s all;
+}
+
+.modal-dialog {
+    display: table;
+    max-width: 95vh;
+    max-height: 95vh;
+    margin: 2.5rem auto !important;
+    overflow: hidden;
+}
+
+.fullsize-image {
+    max-height: 90vh;
+    max-width: 90vh;
+}
+
 /* Set the list of tags to display as a line, without any list styles */
+
 .tag-list {
     display: flex;
     flex-direction: row;
@@ -13,6 +70,7 @@
 }
 
 /* Add styling to each item in the tag list */
+
 .tag-list li {
     padding: 0.1rem;
 }

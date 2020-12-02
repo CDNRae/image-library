@@ -19,40 +19,35 @@ class ImageGallery extends Component {
 
         this.state = {
             images: [],
-            showImageName: true,
             showSidebar: false,
             imagesUpdated: false,
         };
-
-        this.getImages = this.getImages();
-        this.getImages;
     }
 
     componentDidMount() {
-        this.getImages;
+        this.getImages();
     }
 
-    getImages() {
-        console.log("started");
+    getImages = () => {
         ipcRenderer.send("get-images");
 
         ipcRenderer.on("get-images-reply", (event, arg) => {
             if (arg) {
-                this.setState({ images: [arg] });
+                let imageList = JSON.parse(arg);
+                this.setState({ images: imageList });
             }
         });
-    }
+    };
 
     toggleSideBar = () => {
         this.setState({ showSidebar: !this.state.showSidebar });
     };
 
-    renderImage(image, showImageName) {
-        return <Image image={image} showImageName={showImageName}></Image>;
+    renderImage(image, index) {
+        return <Image image={image} index={index}></Image>;
     }
 
     galleryContent() {
-        console.log(this.state.images);
         if (this.state.images.length == 0) {
             return (
                 <div className="no-images-in-gallery">
@@ -60,16 +55,8 @@ class ImageGallery extends Component {
                 </div>
             );
         }
-        return this.state.images.map((image) => {
-            return (
-                <Col
-                    key={image.id}
-                    lg={4}
-                    className="d-flex align-items-stretch"
-                >
-                    {this.renderImage(image, this.state.showImageName)}
-                </Col>
-            );
+        return this.state.images.map((image, index) => {
+            return this.renderImage(image, index);
         });
     }
 
@@ -103,11 +90,17 @@ class ImageGallery extends Component {
                                         Select Images
                                     </Button>
                                     {"   "}
-                                    <UploadImages getImages={this.getImages} />
+                                    <UploadImages
+                                        getImages={this.getImages.bind(this)}
+                                    />
                                 </div>
                             </Col>
                         </Row>
-                        <Row>{this.galleryContent()}</Row>
+                        <Row>
+                            <div className="card-columns">
+                                {this.galleryContent()}
+                            </div>
+                        </Row>
                     </Container>
                 </div>
             </div>

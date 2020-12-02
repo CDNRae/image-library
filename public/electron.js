@@ -49,7 +49,7 @@ app.whenReady().then(() => {
 
     // Connect to the database
     let pathToAppData = app.getPath("userData");
-    pathToAppData = path.join(pathToAppData, "data", "data.sql");
+    pathToAppData = path.join(pathToAppData, "data");
 
     if (!fs.existsSync(pathToAppData)) {
         fs.mkdir(pathToAppData, (err) => {
@@ -59,6 +59,7 @@ app.whenReady().then(() => {
         });
     };
 
+    pathToAppData = path.join(pathToAppData, "data.db")
     databaseManager = new DatabaseManager(pathToAppData);
     createWindow();
 });
@@ -111,6 +112,7 @@ ipcMain.on("get-images", (event, arg) => {
 
 ipcMain.on("insert-images", (event, arg) => {
     databaseManager.insertImages(arg).then((result) => {
+        console.log("reply")
         event.reply("insert-images-reply", JSON.stringify(result));
     });
 })

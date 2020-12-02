@@ -13,7 +13,10 @@ class UploadImages extends Component {
     };
 
     handleClose = () => {
-        this.setState({ show: false });
+        this.setState({
+            images: [],
+            show: false,
+        });
     };
 
     handleShow = () => {
@@ -34,8 +37,6 @@ class UploadImages extends Component {
     };
 
     handleUpload = () => {
-        console.log(this.state.images);
-
         if (this.state.images.length > 0) {
             ipcRenderer.send(
                 "insert-images",
@@ -43,10 +44,11 @@ class UploadImages extends Component {
             );
 
             ipcRenderer.on("insert-images-reply", (event, arg) => {
+                console.log(arg);
                 let response = JSON.parse(arg);
 
                 if (response.status == "success") {
-                    this.props.getImages;
+                    this.props.getImages();
                 } else {
                     console.error(response.message);
                 }

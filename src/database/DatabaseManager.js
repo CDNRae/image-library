@@ -88,6 +88,7 @@ class DatabaseManager {
     insertImages(images) {
         return new Promise((resolve, reject) => {
             let imagesList = [];
+            images = JSON.parse(images);
 
             //Get the number of rows to insert and create a string of '(?)' based on that number for insertion
             let placeholders = images.map((image) => '(?, ?)').join(',');
@@ -114,10 +115,11 @@ class DatabaseManager {
 
     async getImages() {
         return new Promise((resolve, reject) => {
-            this._database.each("SELECT * FROM images", [], (err, rows) => {
+            this._database.all("SELECT * FROM images", [], (err, rows) => {
                 if (err) {
                     reject(err)
                 }
+                console.log("running callback");
                 resolve(rows);
             });
         })
