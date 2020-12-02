@@ -28,6 +28,9 @@ const Image = (props) => {
                         >
                             <BsArrowsAngleExpand />
                         </div>
+                        <div className="image-name">
+                            {props.image.image_name}
+                        </div>
                     </div>
                 </div>
             </Card>

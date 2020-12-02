@@ -1,3 +1,17 @@
+@media (min-width: 576px) {
+    .fullsize-image {
+        max-width: 90vh;
+        max-height: 90vh;
+    }
+}
+
+@media (min-width: 1440px) {
+    .fullsize-image {
+        max-width: 150vh;
+        max-height: 90vh;
+    }
+}
+
 /* Add padding around the image card */
 
 .image-container {
@@ -46,17 +60,26 @@
     transition: 0.5s all;
 }
 
-.modal-dialog {
-    display: table;
-    max-width: 95vh;
-    max-height: 95vh;
-    margin: 2.5rem auto !important;
-    overflow: hidden;
+.image-name {
+    font-size: 20pt;
 }
 
-.fullsize-image {
-    max-height: 90vh;
+.modal-open .modal {
+    display: flex !important;
+    height: 100%;
+}
+
+.modal-open .modal .modal-dialog {
+    margin: auto;
     max-width: 90vh;
+    max-height: 90vh;
+}
+
+.modal-dialog {
+    display: table;
+    overflow: hidden;
+    max-width: 90vh;
+    max-height: 90vh;
 }
 
 /* Set the list of tags to display as a line, without any list styles */
