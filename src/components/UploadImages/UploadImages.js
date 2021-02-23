@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import DragAndDrop from "./DragAndDrop";
+import DragAndDrop from "../DragAndDrop/DragAndDrop";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 

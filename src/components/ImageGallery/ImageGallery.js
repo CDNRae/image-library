@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Image from "../Image/Image";
-import UploadImages from "../UploadModal";
+import UploadImages from "../UploadImages/UploadImages";
 import SideBar from "../SideBar/SideBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
